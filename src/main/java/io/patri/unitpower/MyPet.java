@@ -5,4 +5,7 @@ public class MyPet {
         return "Hola " +gato.saluda();
     }
 
+    public String dimeHolaPerro(Perro perro) {
+        return "Hola " +perro.saluda();
+    }
 }
