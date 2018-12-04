@@ -2,34 +2,47 @@ package io.patri.unitpower;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class MyPetTest {
 
+    private static IPet animalNull = new IPet() {
+        public String saluda() {
+            return null;
+        }
+    };
+
     private MyPet sut;
-    private Gato gato;
-    private Perro perro;
 
     @BeforeMethod
     public void setUp() {
         sut = new MyPet();
-        gato = new Gato();
-        perro = new Perro();
     }
 
     @Test
     public void dimeHola_gato_saludoGato() {
 
-        String actual = sut.dimeHolaGato(gato);
+        Gato gato = new Gato();
+        String actual = sut.dimeHola(gato);
         String expected = "Hola miau";
         Assert.assertEquals(actual, expected);
     }
 
-    @Test
-    public void dimeHola_perro_saludoPerro() {
+    @DataProvider
+    public static Object[][] animales() {
+        return new Object[][] {
+                {new Gato(), "Hola miau"},
+                {new Perro(), "Hola guau"},
+                {animalNull, "Hola null"},
+        };
+    }
 
-        String actual = sut.dimeHolaPerro(perro);
-        String expected = "Hola guau";
+
+
+    @Test(dataProvider = "animales")
+    public void dimeHola_variosPets_correctResponse(IPet pet, String expected) {
+        String actual = sut.dimeHola(pet);
         Assert.assertEquals(actual, expected);
     }
 }
